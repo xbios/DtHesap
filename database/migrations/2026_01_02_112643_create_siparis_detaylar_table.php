@@ -9,9 +9,13 @@ return new class extends Migration {
     {
         Schema::create('siparis_detaylar', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('firma_id')->constrained()->onDelete('cascade');
-            $table->foreignId('siparis_id')->constrained()->onDelete('cascade');
-            $table->foreignId('stok_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('firma_id');
+            $table->unsignedBigInteger('siparis_id');
+            $table->unsignedBigInteger('stok_id')->nullable();
+
+            $table->foreign('firma_id')->references('id')->on('firmas')->onDelete('cascade');
+            $table->foreign('siparis_id')->references('id')->on('siparisler')->onDelete('cascade');
+            $table->foreign('stok_id')->references('id')->on('stoks')->onDelete('set null');
             $table->string('aciklama', 500);
             $table->decimal('miktar', 18, 3);
             $table->decimal('teslim_miktar', 18, 3)->default(0);

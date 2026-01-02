@@ -37,7 +37,16 @@
                                     class="w-8 h-8 bg-gradient-secondary rounded-lg flex items-center justify-center text-white font-semibold">
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                 </div>
-                                <div>{{ Auth::user()->name }}</div>
+                                <div class="text-left">
+                                    <div class="font-bold leading-tight">{{ Auth::user()->name }}</div>
+                                    <div class="text-xs text-primary-600 font-medium tracking-wide">
+                                        @if(Auth::user()->currentFirma)
+                                            {{ Auth::user()->currentFirma->unvan }}
+                                        @else
+                                            Firma Seçilmedi
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="ms-1">
@@ -52,9 +61,20 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <div
+                            class="block px-4 py-2 text-xs text-gray-400 font-bold uppercase tracking-widest border-b border-gray-100 mb-1">
+                            Hesap Yönetimi
+                        </div>
+
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('firmas.select')" class="text-primary-600 font-semibold">
+                            {{ __('Firma Değiştir') }}
+                        </x-dropdown-link>
+
+                        <div class="border-t border-gray-100 my-1"></div>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

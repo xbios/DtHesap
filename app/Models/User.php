@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'current_firma_id',
+        'is_active',
+        'last_login_at',
     ];
 
     /**
@@ -43,6 +46,26 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
+            'last_login_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the current active firma for the user.
+     */
+    public function currentFirma()
+    {
+        return $this->belongsTo(Firma::class, 'current_firma_id');
+    }
+
+    /**
+     * The firmas that belong to the user.
+     */
+    public function firmas()
+    {
+        return $this->belongsToMany(Firma::class, 'firma_user')
+            ->withPivot(['rol', 'yetki_seviyesi'])
+            ->withTimestamps();
     }
 }
