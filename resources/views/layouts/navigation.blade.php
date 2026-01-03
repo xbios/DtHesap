@@ -23,6 +23,10 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('firmas.index')" :active="request()->routeIs('firmas.*')">
+                        {{ __('Firmalar') }}
+                    </x-nav-link>
                 </div>
             </div>
 

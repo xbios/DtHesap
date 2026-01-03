@@ -13,7 +13,10 @@ class FirmaSeeder extends Seeder
      */
     public function up(?User $user = null): void
     {
-        // Try to find the first user if none provided
+        // Try to find the test user specifically
+        $user = $user ?? User::where('email', 'test@example.com')->first();
+
+        // Fallback to first user
         $user = $user ?? User::first();
 
         if (!$user) {

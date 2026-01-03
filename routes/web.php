@@ -19,6 +19,9 @@ Route::middleware('auth')->group(function () {
     // Firma Selection Routes
     Route::get('/firmas/select', [\App\Http\Controllers\FirmaSelectionController::class, 'index'])->name('firmas.select');
     Route::post('/firmas/select/{id}', [\App\Http\Controllers\FirmaSelectionController::class, 'select'])->name('firmas.select.submit');
+
+    // Firma Management Routes
+    Route::resource('firmas', \App\Http\Controllers\FirmaController::class);
 });
 
 require __DIR__ . '/auth.php';
