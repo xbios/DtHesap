@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Fatura;
+use App\Models\Siparis;
+use App\Observers\FaturaObserver;
+use App\Observers\SiparisObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Observer'ları kaydet
+        Fatura::observe(FaturaObserver::class);
+        Siparis::observe(SiparisObserver::class);
     }
 }

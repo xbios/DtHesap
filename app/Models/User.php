@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,5 +45,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // İlişkiler
+    public function firmas(): BelongsToMany
+    {
+        return $this->belongsToMany(Firma::class, 'firma_user')
+            ->withPivot('rol', 'yetki_seviyesi')
+            ->withTimestamps();
+    }
+
+    // Metodlar
+    public function hasAccessToFirma(int $firmaId): bool
+    {
+        return $this->firmas()->where('firma_id', $firmaId)->exists();
     }
 }
