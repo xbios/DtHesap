@@ -32,7 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('faturas', FaturaController::class);
     Route::post('faturas/{fatura}/details', [FaturaController::class, 'addDetail'])->name('faturas.add-detail');
     // Firma Routes
+    Route::resource('firmas', \App\Http\Controllers\FirmaController::class);
     Route::post('firmas/{id}/switch', [\App\Http\Controllers\FirmaController::class, 'switch'])->name('firmas.switch');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
