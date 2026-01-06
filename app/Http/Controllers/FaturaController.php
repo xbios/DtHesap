@@ -72,7 +72,10 @@ class FaturaController extends Controller
      */
     public function create()
     {
-        return view('fatura.create');
+        $cariler = \App\Models\Cari::orderBy('unvan')->get();
+        $stoklar = \App\Models\Stok::orderBy('ad')->get();
+
+        return view('fatura.create', compact('cariler', 'stoklar'));
     }
 
     /**
@@ -156,7 +159,14 @@ class FaturaController extends Controller
      */
     public function edit(Fatura $fatura)
     {
-        return view('fatura.edit', compact('fatura'));
+        $cariler = \App\Models\Cari::orderBy('unvan')->get();
+        $stoklar = \App\Models\Stok::orderBy('ad')->get();
+
+        return view('fatura.edit', [
+            'fatura' => $fatura->load('detaylar.stok'),
+            'cariler' => $cariler,
+            'stoklar' => $stoklar
+        ]);
     }
 
     /**
@@ -166,9 +176,54 @@ class FaturaController extends Controller
     {
         // $this->authorize('update', $fatura);
 
-        $fatura->update($request->validated());
+        $validated = $request->validated();
 
-        return redirect()->route('faturas.index')->with('success', 'Fatura başarıyla güncellendi');
+        DB::beginTransaction();
+        try {
+            // Fatura başlığını güncelle
+            $fatura->update([
+                'cari_id' => $validated['cari_id'],
+                'fatura_no' => $validated['fatura_no'],
+                'fatura_tip' => $validated['fatura_tip'],
+                'tarih' => $validated['tarih'],
+                'vade_tarih' => $validated['vade_tarih'] ?? null,
+                'doviz_tip' => $validated['doviz_tip'],
+                'doviz_kur' => $validated['doviz_kur'],
+                'odeme_durum' => $validated['odeme_durum'],
+                'aciklama' => $validated['aciklama'] ?? null,
+            ]);
+
+            // Mevcut detayları sil (veya senkronize et)
+            // Bu basit yaklaşım: hepsini silip yeniden ekle
+            $fatura->detaylar()->delete();
+
+            // Yeni detayları ekle
+            foreach ($validated['detaylar'] as $index => $detayData) {
+                $detay = $fatura->detaylar()->create([
+                    'stok_id' => $detayData['stok_id'] ?? null,
+                    'aciklama' => $detayData['aciklama'],
+                    'miktar' => $detayData['miktar'],
+                    'birim' => $detayData['birim'],
+                    'birim_fiyat' => $detayData['birim_fiyat'],
+                    'kdv_oran' => $detayData['kdv_oran'],
+                    'indirim_oran' => $detayData['indirim_oran'] ?? 0,
+                    'sira' => $index + 1,
+                ]);
+
+                $detay->calculateTotals();
+            }
+
+            // Toplamları hesapla
+            $fatura->calculateTotals();
+
+            DB::commit();
+
+            return redirect()->route('faturas.index')->with('success', 'Fatura başarıyla güncellendi');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withInput()->with('error', 'Fatura güncellenirken hata oluştu: ' . $e->getMessage());
+        }
     }
 
     /**

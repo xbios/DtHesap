@@ -24,15 +24,23 @@ class UpdateFaturaRequest extends FormRequest
         $faturaId = $this->route('fatura')->id ?? $this->route('fatura');
         
         return [
-            'cari_id' => 'sometimes|exists:caris,id',
-            'fatura_no' => 'sometimes|string|max:50|unique:faturas,fatura_no,' . $faturaId,
-            'fatura_tip' => 'sometimes|in:alis,satis',
-            'tarih' => 'sometimes|date',
+            'cari_id' => 'required|exists:caris,id',
+            'fatura_no' => 'required|string|max:50|unique:faturas,fatura_no,' . $faturaId,
+            'fatura_tip' => 'required|in:alis,satis',
+            'tarih' => 'required|date',
             'vade_tarih' => 'nullable|date|after_or_equal:tarih',
-            'doviz_tip' => 'sometimes|string|max:3',
-            'doviz_kur' => 'sometimes|numeric|min:0',
-            'odeme_durum' => 'sometimes|in:beklemede,kismi,tamamlandi',
+            'doviz_tip' => 'required|string|max:3',
+            'doviz_kur' => 'required|numeric|min:0',
+            'odeme_durum' => 'required|in:beklemede,kismi,tamamlandi',
             'aciklama' => 'nullable|string',
+            'detaylar' => 'required|array|min:1',
+            'detaylar.*.stok_id' => 'nullable|exists:stoks,id',
+            'detaylar.*.aciklama' => 'required|string',
+            'detaylar.*.miktar' => 'required|numeric|min:0.01',
+            'detaylar.*.birim' => 'required|string|max:20',
+            'detaylar.*.birim_fiyat' => 'required|numeric|min:0',
+            'detaylar.*.kdv_oran' => 'required|numeric|min:0|max:100',
+            'detaylar.*.indirim_oran' => 'nullable|numeric|min:0|max:100',
         ];
     }
 
