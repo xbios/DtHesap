@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Fatura;
 use App\Models\CariHareket;
 use App\Models\StokHareket;
+use App\Models\ActivityLog;
 
 class FaturaObserver
 {
@@ -15,6 +16,13 @@ class FaturaObserver
     {
         // Detaylar henüz eklenmemiş olabilir, bu yüzden sadece cari hareket oluştur
         $this->createCariHareket($fatura);
+
+        ActivityLog::log(
+            'Fatura',
+            'created',
+            "Yeni fatura oluşturuldu: {$fatura->fatura_no} (" . ($fatura->fatura_tip == 'satis' ? 'Satış' : 'Alış') . ")",
+            ['fatura_id' => $fatura->id, 'toplam' => $fatura->genel_toplam]
+        );
     }
 
     /**
@@ -24,6 +32,13 @@ class FaturaObserver
     {
         // Fatura güncellendiğinde hareketleri yeniden oluştur
         $this->recreateHareketler($fatura);
+
+        ActivityLog::log(
+            'Fatura',
+            'updated',
+            "Fatura güncellendi: {$fatura->fatura_no}",
+            ['fatura_id' => $fatura->id, 'changes' => $fatura->getChanges()]
+        );
     }
 
     /**
@@ -34,6 +49,13 @@ class FaturaObserver
         // Fatura silinmeden önce ilgili hareketleri sil
         $fatura->cariHareket()?->delete();
         $fatura->stokHareketler()->delete();
+
+        ActivityLog::log(
+            'Fatura',
+            'deleted',
+            "Fatura silindi: {$fatura->fatura_no}",
+            ['fatura_id' => $fatura->id, 'no' => $fatura->fatura_no]
+        );
     }
 
     /**
@@ -63,11 +85,11 @@ class FaturaObserver
         if ($fatura->fatura_tip === 'alis') {
             // Alış faturası: Tedarikçiye borçlanıyoruz (alacak)
             $hareket->alacak = $fatura->genel_toplam;
-            $hareket->borc = 0;
+            $hareket->borc = 0.00;
         } else {
             // Satış faturası: Müşteriden alacaklıyız (borç)
             $hareket->borc = $fatura->genel_toplam;
-            $hareket->alacak = 0;
+            $hareket->alacak = 0.00;
         }
 
         $hareket->save();
@@ -100,10 +122,10 @@ class FaturaObserver
             if ($fatura->fatura_tip === 'alis') {
                 // Alış faturası: Stok girişi
                 $hareket->giris = $detay->miktar;
-                $hareket->cikis = 0;
+                $hareket->cikis = 0.00;
             } else {
                 // Satış faturası: Stok çıkışı
-                $hareket->giris = 0;
+                $hareket->giris = 0.00;
                 $hareket->cikis = $detay->miktar;
             }
 

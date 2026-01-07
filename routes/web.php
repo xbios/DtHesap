@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
     // Fatura Routes
     Route::resource('faturas', FaturaController::class);
     Route::post('faturas/{fatura}/details', [FaturaController::class, 'addDetail'])->name('faturas.add-detail');
+
+    // Stok Routes
+    Route::resource('stoks', \App\Http\Controllers\StokController::class);
+
     // Firma Routes
     Route::resource('firmas', \App\Http\Controllers\FirmaController::class);
     Route::post('firmas/{id}/switch', [\App\Http\Controllers\FirmaController::class, 'switch'])->name('firmas.switch');
