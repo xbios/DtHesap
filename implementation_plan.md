@@ -3,9 +3,9 @@
 Bu belge, DtHesap adlı çoklu kiracılı (multi-tenant) ön muhasebe/ERP sisteminin geliştirme aşamalarını ve mimari kararlarını özetlemektedir.
 
 ## 1. Mimarlık ve Teknoloji Yığını
-- **Framework:** Laravel 11.x
-- **Frontend:** Inertia.js (Vue.js veya React - tercihe bağlı olarak Tailwind CSS ile)
-- **Veritabanı:** MySQL/PostgreSQL
+- **Framework:** Laravel 12.x
+- **Frontend:** Alpine.js ve Tailwind CSS ile
+- **Veritabanı:** MySQL
 - **Multi-tenancy:** `firma_id` bazlı kapsamlı (scoped) mimari kullanılarak her kullanıcının sadece kendi firmasına ait verilere erişmesi sağlanır.
 
 ## 2. Temel Modüller
@@ -22,9 +22,8 @@ Bu belge, DtHesap adlı çoklu kiracılı (multi-tenant) ön muhasebe/ERP sistem
 
 ### 2.3 Fatura ve Finans
 - [x] Satış ve Alış faturaları mimarisinin kurulması.
-- [x] Fatura kalemleri (Detay) yönetimi.
-- [ ] Stok entegrasyonu (Fatura kesildiğinde stoktan düşme).
-- [ ] Kasa ve Banka modülleri ile entegrasyon.
+- [ ] Stok entegrasyonu (Fatura kesildiğinde stoktan düşme)
+- [ ] Kasa ve Banka modülleri ile entegrasyon
 
 ### 2.4 Stok ve Depo Yönetimi
 - [x] Stok kartları ve kategorileri.

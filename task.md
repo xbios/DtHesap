@@ -4,7 +4,7 @@ Bu liste, sistemdeki aktif ve gelecek görevleri takip etmek için kullanılır.
 
 ## 🟢 Devam Eden Görevler
 - [ ] Fatura ve Stok entegrasyonu (Fatura kaydedildiğinde stok hareketlerinin otomatik oluşması).
-- [ ] Frontend arayüzünün (Vue/React + Tailwind) geliştirilmesi (Dashboard ekranı).
+- [ ] Frontend arayüzünün geliştirilmesi (Dashboard ekranı).
 - [ ] Firma değiştirme arayüzünün (UI) iyileştirilmesi.
 
 ## 🟡 Öncelikli Görevler

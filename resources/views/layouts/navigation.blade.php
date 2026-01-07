@@ -28,6 +28,14 @@
                         class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium {{ request()->routeIs('faturas.*') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         Faturalar
                     </a>
+                    <a href="{{ route('kasas.index') }}"
+                        class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium {{ request()->routeIs('kasas.*') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        Kasa
+                    </a>
+                    <a href="{{ route('bankas.index') }}"
+                        class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium {{ request()->routeIs('bankas.*') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        Banka
+                    </a>
                     <a href="{{ route('firmas.index') }}"
                         class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium {{ request()->routeIs('firmas.*') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         Firmalar

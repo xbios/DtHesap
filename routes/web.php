@@ -3,9 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CariController;
 use App\Http\Controllers\FaturaController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -34,6 +32,12 @@ Route::middleware('auth')->group(function () {
 
     // Stok Routes
     Route::resource('stoks', \App\Http\Controllers\StokController::class);
+
+    // Kasa Routes
+    Route::resource('kasas', \App\Http\Controllers\KasaController::class);
+
+    // Banka Routes
+    Route::resource('bankas', \App\Http\Controllers\BankaController::class);
 
     // Firma Routes
     Route::resource('firmas', \App\Http\Controllers\FirmaController::class);
