@@ -8,6 +8,66 @@
     display: none !important;
 }
 
+@layer utilities {
+    .bg-gradient-mesh {
+        background-color: #f8fafc;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.15) 0px, transparent 50%);
+    }
+
+    .dark .bg-gradient-mesh {
+        background-color: #0f172a;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.1) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.1) 0px, transparent 50%);
+    }
+
+    .glass-strong {
+        @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-slate-800/50;
+    }
+
+    .shadow-glass-lg {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+                    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .bg-gradient-primary {
+        @apply bg-gradient-to-br from-indigo-600 to-purple-600;
+    }
+
+    .shadow-glow {
+        box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+    }
+
+    @keyframes slide-up {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scale-in {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .animate-slide-up { animation: slide-up 0.6s ease-out forwards; }
+    .animate-scale-in { animation: scale-in 0.5s ease-out forwards; }
+    .animate-fade-in { animation: fade-in 1s ease-out forwards; }
+    
+    .animate-pulse-slow {
+        animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+}
+
 body {
     font-family: 'Inter', sans-serif;
 }
